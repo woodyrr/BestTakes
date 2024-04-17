@@ -1,0 +1,45 @@
+/* color palette from <https://github.com/vuejs/theme> */
+:root {
+  --main-white: rgb(255, 255, 255);
+
+  
+
+  --vt-section-1:#1b1a1a77;
+  --vt-section-2:transparent;
+  --vt-c-black: #09090B;
+
+  --vt-ch2-text:#f8f8f8;
+
+  --vt-light-black:#ffffff2e;
+}
+
+/* semantic color variables for this project */
+:root {
+  --color-background: var(--vt-c-black);
+  --section1-bg-color: var(--vt-section-1);
+  --section2-bg-color: var(--vt-section-2);
+  --section1-border:var(--vt-light-black);
+  --text2-color: var(--vt-ch2-text);
+ /* need to do section 2 border color. */
+}
+
+/* @media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: var(--vt-c-black);
+    --color-background-soft: var(--vt-c-black-soft);
+    --color-background-mute: var(--vt-c-black-mute);
+
+    --color-border: var(--vt-c-divider-dark-2);
+    --color-border-hover: var(--vt-c-divider-dark-1);
+
+    --color-heading: var(--vt-c-text-dark-1);
+    --color-text: var(--vt-c-text-dark-2);
+  }
+} */
+.arvo-regular {
+  font-family: "Arvo", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+
