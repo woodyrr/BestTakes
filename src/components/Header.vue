@@ -1,7 +1,7 @@
 <template>
-    <header class="text-[--main-white] flex justify-between py-10 ">
+    <header class="text-[--main-white] flex justify-between pt-14 px-[7%] ">
         <div class="flex gap-2 justify-center items-center">
-            <h1 class="text-3xl font-bold">BestTakes</h1>
+            <RouterLink to="/" class="text-3xl font-bold">BestTakes</RouterLink>
             <i class="fa-regular fa-face-surprise text-red-400 text-lg duration-100 animate-bounce"></i>
         </div>
         <!-- font-family: PremierSans-Regular, Arial, Helvetica Neue, Helvetica, sans-serif; -->
@@ -11,3 +11,6 @@
         </button>
     </header>
 </template>
+<script setup>
+import { RouterLink } from 'vue-router'
+</script>

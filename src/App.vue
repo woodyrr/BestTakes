@@ -1,6 +1,6 @@
 <template>
   <!-- <div class="text-green-700 text-2xl bg-zinc-800">Hello, from TailwindCSS!  </div> -->
-  <section class="flex flex-col gap-12">
+  <section class="flex flex-col gap-8">
     <top />
     <router-view />
   </section>
