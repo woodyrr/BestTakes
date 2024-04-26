@@ -5,6 +5,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
     apiKey: "AIzaSyDkjxUiWC5qbLkxQfYY2N9-tXwq2U9n7FY",
@@ -16,6 +17,7 @@ const firebaseConfig = {
 };
 
 const apps = initializeApp(firebaseConfig);
+const db = getFirestore(apps);
 
 const app = createApp(App)
 // app.use(PrimeVue);
@@ -24,3 +26,4 @@ app.use(MotionPlugin)
 app.mount('#app')
 
 export {apps};
+export default db;
