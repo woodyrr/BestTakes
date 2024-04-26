@@ -11,5 +11,6 @@
 // @import 'base';
 import { RouterView, RouterLink } from 'vue-router'
 import top from './components/Header.vue'
+// import top from './components/header2.vue'
 import home from './views/AllTakes.vue'
 </script>

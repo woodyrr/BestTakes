@@ -1,8 +1,6 @@
 <template>
-    <!-- <div class="text-[--text2-color] bg-[--section1-bg-color] w-full h-[200px] border border-[#ffffff2e]">hey</div>
-    <div class="text-[--text2-color] bg-[--section2-bg-color] w-full h-[200px] border ">hello</div> -->
-      <!-- <div class="text-white">yea</div> -->
-      <section class="flex flex-col justify-start text-white gap-10 pt-10">
+    
+      <!-- <section class="flex flex-col justify-start text-white gap-10 pt-10">
         <div class="flex items-center gap-2">
           <h2 class="takes text-orange-400">Active Takes</h2>
           <i class="fa-solid fa-bowling-ball text-gray-100 animate-spin xl:text-[18px]"></i>
@@ -16,10 +14,43 @@
           <i class="fa-solid fa-face-grin-squint-tears text-gray-200"></i>
         </div>
         
-      </section>
+      </section> -->
     
 </template>
 <script setup>
+
+import {ref, onMounted} from 'vue'
+// import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
+
+import {getAuth,GithubAuthProvider, signInWithPopup, onAuthStateChanged, signOut} from "firebase/auth"
+
+// , GithubAuthProvide
+// const isLoggedIn = ref(false)
+// const router = useRouter()
+// const auth = getAuth();
+// let usersName = []
+// onMounted(() => {
+    
+//     onAuthStateChanged(auth, (user) => {
+//         if (user) {
+//             isLoggedIn.value = true;
+//             let names  = user.displayName
+//             usersName.value = names
+//             // console.log(usersName)
+//             return usersName
+            
+            
+//         }
+//         else{
+//             isLoggedIn.value = false;
+//         }
+//     })
+// })
+// const handleSignOut = () => {
+//     signOut(auth).then(() => {
+//         router.push("/")
+//     })
+// };
 
 </script>
 
