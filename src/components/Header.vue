@@ -71,7 +71,7 @@ const signInWithGithub = () => {
     const provider = new GithubAuthProvider();
     signInWithPopup(getAuth(), provider)
     .then((result) => {
-        console.log(result.user);
+        // console.log(result.user);
         displayNames()
         router.push("/home")
     })
