@@ -1,9 +1,56 @@
 <script setup>
 import {ref, onMounted, onUnmounted } from 'vue'
 import {useRouter} from 'vue-router'
-const router = useRouter()
 import db from '../main.js'
 import { collection, addDoc, getDocs, orderBy, onSnapshot, doc, deleteDoc, query } from "firebase/firestore"; 
+import {getAuth,GithubAuthProvider, signInWithPopup, onAuthStateChanged, signOut} from "firebase/auth"
+
+
+const isLoggedIn = ref(false)
+const router = useRouter()
+const auth = getAuth();
+
+
+//auth user personal info stored in arrays
+let usersName = []
+let userIcons = []
+let usersid = []
+
+//retrieveing users data by popup
+// const signInWithGithub = () => {
+//     const provider = new GithubAuthProvider();
+//     signInWithPopup(getAuth(), provider)
+//     .then((result) => {
+//         console.log(result.user);
+//         displayNames()
+//         router.push("/home")
+//     })
+//     .catch((error) => {
+
+//     })
+// };
+
+onMounted(() => {
+    
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            isLoggedIn.value = true;
+            let names  = user.displayName
+            let photo  = user.photoURL
+            let id  = user.uid
+            usersName.value = names
+            userIcons.value = photo
+            usersid.value = id
+            // console.log(usersName)
+            return usersName
+            
+            
+        }
+        else{
+            isLoggedIn.value = false;
+        }
+    })
+})
 
 
 //list items to connect with v-modal
@@ -26,32 +73,27 @@ const addChoice = () => {
 
 
 // pushing items into takes array, eventually firebase db
-const Takes = ref([])
-const mesure = ref([]);
-const num = ref(0);
-const recipes = ref([])
-const addNote = () => {
-    Takes.value.push({
-        id: Math.floor(Math.random() * 1000000),
-        title: newTake.value,
-        date: new Date(),
-        description:Description.value,
-        options:allChoices.value,
-        endDate:endDate.value
-    })
 
+const addTake = () => {
+  addDoc(collection(db, 'Takes'), {
+    id: Math.floor(Math.random() * 1000000),
+    title: newTake.value,
+    description:Description.value,
+    options:allChoices.value,
+    endDate:EndDate.value,
+    date: new Date(Date.now()).toLocaleString(),
+    uid:usersid.value,
+    uicon:userIcons.value,
+    user:usersName.value
+  });
     newTake.value = '';
-    router.push("/home");
-}
+    EndDate.value = '';
+    allChoices.value = '';
+    Description.value = '';
+    router.push("/");
+    
+};
 
-
-// const newlist = () => {
-//   num.value++;
-//   mesure.value.push({
-//     measure: `measurement ${num.value}`,
-//     ingredient: `ingredient ${num.value}`,
-//   });
-// };
 
 
 // onMounted(async() => {
@@ -99,11 +141,11 @@ const addNote = () => {
             <span class="text-base font-medium">End date</span>
             <div class="flex rounded-lg justify-between items-center p-1 bg-[#5349492d] border border-[#53494954] duration-300 hover:bg-[#53494971]  hover:border-[#53494954] hover:text-[rgba(255,255,255,0.7)] px-2">
                 <span class="text-[rgba(255,255,255,0.7)]">Pick a date</span>
-                <input v-model = 'EndDate' type="date"  class="rounded-lg p-1 text-[17px] text-white bg-transparent  text-[rgba(255,255,255,0.7)]">
+                <input v-model = 'EndDate' type="date"  class="rounded-lg p-1 text-[17px] text-white bg-transparent  text-[rgba(255,255,255,0.7)]" required>
             </div>
         </div>
 
-        <button class=" text-base w-full bg-green-500  border-none rounded-lg text-gray-900 cursor-pointer p-2 font-semibold">Create</button>
+        <button @click="addTake" class=" text-base w-full bg-green-500  border-none rounded-lg text-gray-900 cursor-pointer p-2 font-semibold">Create</button>
     </div>
     
 </template>

@@ -15,42 +15,62 @@
         </div>
         
       </section> -->
+
+      <section class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8 text-[16px] text-[#E5E7EB] font-medium px-[2%] lg:px-[6%]">
+        <div v-for="item in takes" :key="item.id">
+          <div class="flex flex-col gap-4 bg-red-500 p-3 rounded-lg">
+              <div class="flex gap-2 items-center">
+                <img :src="item.uicon" alt="" srcset="" class="w-8 rounded-full">
+                <h2 class="text-sm">{{ item.user }}</h2>
+              </div>
+              <h2>{{ item.title }}</h2>
+              <div class="">
+                {{ item.created }}
+              </div>
+              <div class="">
+                {{ item.deadline }}
+              </div>
+
+              
+            
+          </div>
+          
+          <div> test</div>
+        </div>
+      </section>
     
 </template>
+
 <script setup>
 
-import {ref, onMounted} from 'vue'
-// import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
+import {ref, onMounted, onUnmounted } from 'vue'
+import {useRouter} from 'vue-router'
+const router = useRouter()
+import db from '../main.js'
+import { collection, addDoc, getDocs, orderBy, onSnapshot, doc, deleteDoc, query } from "firebase/firestore"; 
 
-import {getAuth,GithubAuthProvider, signInWithPopup, onAuthStateChanged, signOut} from "firebase/auth"
+const takes = ref([]);
 
-// , GithubAuthProvide
-// const isLoggedIn = ref(false)
-// const router = useRouter()
-// const auth = getAuth();
-// let usersName = []
-// onMounted(() => {
-    
-//     onAuthStateChanged(auth, (user) => {
-//         if (user) {
-//             isLoggedIn.value = true;
-//             let names  = user.displayName
-//             usersName.value = names
-//             // console.log(usersName)
-//             return usersName
-            
-            
-//         }
-//         else{
-//             isLoggedIn.value = false;
-//         }
-//     })
-// })
-// const handleSignOut = () => {
-//     signOut(auth).then(() => {
-//         router.push("/")
-//     })
-// };
+onMounted(() => {
+  const takeCollection = query(collection(db, 'Takes'), orderBy('date', 'desc'));
+  const unsubscribe = onSnapshot(takeCollection, (snapshot) => {
+    takes.value = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      description: doc.data().Description,
+      title: doc.data().title,
+      options: doc.data().options,
+      deadline:doc.data().endDate,
+      created: doc.data().date,
+      uid:doc.data().uid,
+      uicon:doc.data().uicon,
+      user:doc.data().user
+    }));
+  });
+
+  // Unsubscribe from snapshot listener when component is unmounted
+  onUnmounted(unsubscribe);
+});
+
 
 </script>
 
