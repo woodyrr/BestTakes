@@ -1,32 +1,23 @@
-<template >
-  <div class="flex flex-col gap-8 px-[2%] lg:px-[7%]">
-
-    <div class="flex flex-col gap-10">
-      <div class="flex items-center gap-2">
-        <h2 class="text-green-400 takes font-medium">Active Takes</h2>
-        <i class="fa-solid fa-bowling-ball text-gray-100 animate-spin xl:text-[18px]"></i>
-      </div>
-      <active />
-    </div>
-
-    <div class="flex flex-col gap-10">
-      <div class="flex items-center gap-2">
-        <h2 class="text-red-400 takes font-medium">Past Takes</h2>
-        <i class="fa-regular fa-clock  text-gray-100 animate-pulse xl:text-[18px]"></i>
-      </div>
-      <past />
-    </div>
-
-  </div>
-</template>
-
-
 <script setup>
 import {ref, onMounted, onUnmounted} from 'vue'
-import active from '../components/Active.vue'
-import past from '../components/Past.vue'
+import { useRoute} from 'vue-router';
 import db from '../main.js'
 import { collection, addDoc, getDocs, orderBy, onSnapshot, doc, deleteDoc, query } from "firebase/firestore"; 
+const route = useRoute();
+
+let usersName = []
+// const auth = getAuth();
+// onAuthStateChanged(auth, (user) => {
+// if (user) {
+//     let names  = user.displayName
+//     usersName.value = names
+//     return usersName
+
+// } else {
+//     // User is signed out
+//     // ...
+// }
+// });
 
 const takes = ref([]);
 
@@ -63,4 +54,10 @@ onUnmounted(unsubscribe);
 }
 </style>
 
-
+<template>
+    <div v-for="item in takes" class="px-[4%] text-white">
+        <div class="flex flex-col gap-10 w-full sm:px-[18%] 2xl:px-[25%]"  v-if="item.id == route.params.id">
+            {{ item.title }}
+        </div>
+    </div>
+</template>

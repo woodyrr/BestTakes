@@ -17,7 +17,7 @@
         </button>
 
         <!-- profile/create/logout overlay -->
-        <transition name="nav" class="right-0 mt-16 px-[17%] " v-motion-slide-top >
+        <transition name="nav" class="right-0 mt-16 px-[17%] z-10" v-motion-slide-top >
             <div v-if="overlay"  class="fixed  opacity">
                 <div class="bg-[rgba(22,20,22,255)] border border-[#53494954] p-2 flex flex-col gap-2 w-64 rounded-lg text-base font-medium text-[--text2-color]">
         
