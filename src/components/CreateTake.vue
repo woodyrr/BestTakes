@@ -61,16 +61,25 @@ const EndDate = ref("");
 const allChoices = ref([]);
 
 //voting options section. Adding choices into allChoices Array.
+// const addChoice = () => {
+//     if(choices.value.length > 0){
+//         allChoices.value.push({
+//         options:choices.value
+//     })
+//     choices.value = '';
+//     return allChoices.value
+//     }
+// }
+
 const addChoice = () => {
     if(choices.value.length > 0){
-        allChoices.value.push({
-        options:choices.value
-    })
+        allChoices.value.push(
+        choices.value
+    )
     choices.value = '';
     return allChoices.value
     }
 }
-
 
 // pushing items into takes array, eventually firebase db
 
@@ -129,7 +138,7 @@ const addTake = () => {
 
             <div v-for="(items , index) in allChoices" class="flex flex-col gap-1 font-semibold ">
                 <div class="flex justify-between text-yellow-400 text-base">
-                    <div>{{ items.options }}</div>
+                    <div>{{ items }}</div>
                     <i class="fa-regular fa-trash-can" @click="allChoices.splice(index, 1);"></i>
                 </div>
             </div>

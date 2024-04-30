@@ -55,9 +55,26 @@ onUnmounted(unsubscribe);
 </style>
 
 <template>
-    <div v-for="item in takes" class="px-[4%] text-white">
-        <div class="flex flex-col gap-10 w-full sm:px-[18%] 2xl:px-[25%]"  v-if="item.id == route.params.id">
-            {{ item.title }}
+    <div>
+        <div v-for="item in takes" class=" text-white">
+        <div class="flex flex-col  w-full px-[2%] lg:px-[9%]" v-if="item.id == route.params.id">
+            <div class="text-[24px] font-semibold">
+                {{ item.title }}
+            </div>
+            <div>
+                {{ item.description }}
+            </div>
+
+            <div v-if="item.options">
+                <!-- <div v-for="option in Object.values(item.options)" :key="option">
+                    {{ option }}
+                </div> -->
+                <div v-for="option in item.options" :key="option">
+            {{ option }}
+          </div>
+            </div>
         </div>
     </div>
+    </div>
+    
 </template>
