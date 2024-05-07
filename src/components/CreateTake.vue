@@ -52,6 +52,7 @@ onMounted(() => {
     })
 })
 
+const randomId = Math.floor(Math.random() * 1000000)
 
 //list items to connect with v-modal
 const newTake = ref('');
@@ -71,21 +72,33 @@ const allChoices = ref([]);
 //     }
 // }
 
+// const addChoice = () => {
+//     if(choices.value.length > 0){
+//         allChoices.value.push(
+//         choices.value,
+//     )
+//     choices.value = '';
+//     return allChoices.value
+//     }
+// }
+
 const addChoice = () => {
     if(choices.value.length > 0){
-        allChoices.value.push(
-        choices.value
+        allChoices.value.push({
+            option:choices.value,
+            percent:0
+        }
+        
     )
     choices.value = '';
     return allChoices.value
     }
 }
-
 // pushing items into takes array, eventually firebase db
 
 const addTake = () => {
   addDoc(collection(db, 'Takes'), {
-    id: Math.floor(Math.random() * 1000000),
+    id: randomId,
     title: newTake.value,
     description:Description.value,
     options:allChoices.value,
@@ -103,6 +116,27 @@ const addTake = () => {
     
 };
 
+const votes = () =>{
+    addDoc(collection(db, 'Votes'), {
+        "author":{
+            "uid":usersid.value,
+            "profileImg":userIcons.value,
+            "name":usersName.value,
+        },
+        "Vote":{
+            "totalVotes":0,
+            "voters":[],
+            "options":allChoices.value,
+            
+        },
+        title:newTake.value,
+        id:randomId
+        
+    })
+}
+
+
+
 
 
 // onMounted(async() => {
@@ -118,7 +152,7 @@ const addTake = () => {
 
 <template>
     
-    <div class=" w-full px-[14%] flex flex-col gap-7 text-[--text2-color] text-sm placeholder-[rgba(255,255,255,0.7)]">
+    <div class=" w-full px-[3%] md:px-[14%] flex flex-col gap-7 text-[--text2-color] text-sm placeholder-[rgba(255,255,255,0.7)]">
         
         <div class="flex flex-col gap-2">
             <span class="text-base font-medium">Title</span>
@@ -154,7 +188,7 @@ const addTake = () => {
             </div>
         </div>
 
-        <button @click="addTake" class=" text-base w-full bg-green-500  border-none rounded-lg text-gray-900 cursor-pointer p-2 font-semibold">Create</button>
+        <button @click=" votes(), addTake()" class=" text-base w-full bg-green-500  border-none rounded-lg text-gray-900 cursor-pointer p-2 font-semibold">Create</button>
     </div>
     
 </template>

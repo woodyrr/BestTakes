@@ -1,6 +1,6 @@
 <template>
 
-    <header class="text-[--main-white] flex justify-between pt-14 px-[7%] ">
+    <header class="text-[--main-white] flex justify-between pt-14 px-[1%] md:px-[7%] ">
 
         <div class="flex gap-2 justify-center items-center">
             <RouterLink to="/" class="text-3xl font-bold">BestTakes</RouterLink>

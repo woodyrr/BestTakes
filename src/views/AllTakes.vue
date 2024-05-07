@@ -34,7 +34,7 @@ onMounted(() => {
 const takeCollection = query(collection(db, 'Takes'), orderBy('date', 'desc'));
 const unsubscribe = onSnapshot(takeCollection, (snapshot) => {
 takes.value = snapshot.docs.map((doc) => ({
-  id: doc.id,
+  id: doc.data().id,
   description: doc.data().Description,
   title: doc.data().title,
   options: doc.data().options,
