@@ -16,20 +16,6 @@ let usersName = []
 let userIcons = []
 let usersid = []
 
-//retrieveing users data by popup
-// const signInWithGithub = () => {
-//     const provider = new GithubAuthProvider();
-//     signInWithPopup(getAuth(), provider)
-//     .then((result) => {
-//         console.log(result.user);
-//         displayNames()
-//         router.push("/home")
-//     })
-//     .catch((error) => {
-
-//     })
-// };
-
 onMounted(() => {
     
     onAuthStateChanged(auth, (user) => {
@@ -60,27 +46,6 @@ const Description = ref('');
 const choices = ref("");
 const EndDate = ref("");
 const allChoices = ref([]);
-
-//voting options section. Adding choices into allChoices Array.
-// const addChoice = () => {
-//     if(choices.value.length > 0){
-//         allChoices.value.push({
-//         options:choices.value
-//     })
-//     choices.value = '';
-//     return allChoices.value
-//     }
-// }
-
-// const addChoice = () => {
-//     if(choices.value.length > 0){
-//         allChoices.value.push(
-//         choices.value,
-//     )
-//     choices.value = '';
-//     return allChoices.value
-//     }
-// }
 
 const addChoice = () => {
     if(choices.value.length > 0){
@@ -116,36 +81,52 @@ const addTake = () => {
     
 };
 
-const votes = () =>{
-    addDoc(collection(db, 'Votes'), {
-        "author":{
-            "uid":usersid.value,
-            "profileImg":userIcons.value,
-            "name":usersName.value,
-        },
-        "Vote":{
-            "totalVotes":0,
-            "voters":[],
-            "options":allChoices.value,
+// const votes = () =>{
+//     addDoc(collection(db, 'Votes'), {
+//         "author":{
+//             "uid":usersid.value,
+//             "profileImg":userIcons.value,
+//             "name":usersName.value,
+//         },
+//         "Vote":{
+//             "totalVotes":0,
+//             "voters":[],
+//             "options":allChoices.value,
             
-        },
-        title:newTake.value,
-        id:randomId
+//         },
+//         title:newTake.value,
+//         id:randomId
         
-    })
+//     })
+// }
+
+
+const votes = () => {
+    // Ensure allChoices contains an array of strings
+    const options = allChoices.value.map(choice => {
+        if (typeof choice === 'string') {
+            return { option: choice, percent: 0 };
+        } else {
+            return choice;
+        }
+    });
+
+    addDoc(collection(db, 'Votes'), {
+        author: {
+            uid: usersid.value,
+            profileImg: userIcons.value,
+            name: usersName.value,
+        },
+        Vote: {
+            totalVotes: 0,
+            voters: [],
+            options: options,
+        },
+        title: newTake.value,
+        id: randomId
+    });
 }
 
-
-
-
-
-// onMounted(async() => {
-//     let recipeColection = await getDocs(collection(db, 'personal recipes'))
-//     recipeColection.forEach((recipe) => {
-//         recipes.value.push({...recipe.data(), id: recipe.id})
-//         console.log(recipe.data(), recipe.id)
-//     });
-// })
 
 </script>
 
