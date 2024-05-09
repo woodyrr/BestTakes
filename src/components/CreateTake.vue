@@ -85,26 +85,6 @@ const addTake = () => {
     
 };
 
-// const votes = () =>{
-//     addDoc(collection(db, 'Votes'), {
-//         "author":{
-//             "uid":usersid.value,
-//             "profileImg":userIcons.value,
-//             "name":usersName.value,
-//         },
-//         "Vote":{
-//             "totalVotes":0,
-//             "voters":[],
-//             "options":allChoices.value,
-            
-//         },
-//         title:newTake.value,
-//         id:randomId
-        
-//     })
-// }
-
-
 const votes = () => {
     // Ensure allChoices contains an array of strings
     const options = allChoices.value.map(choice => {
@@ -121,11 +101,6 @@ const votes = () => {
             profileImg: userIcons.value,
             name: usersName.value,
         },
-        // Vote: {
-        //     totalVotes: 0,
-        //     voters: [],
-        //     options: options,
-        // },
         totalVotes:0,
         voters:[],
         options: options,
@@ -133,8 +108,6 @@ const votes = () => {
         id: randomId
     });
 }
-
-
 </script>
 
 
