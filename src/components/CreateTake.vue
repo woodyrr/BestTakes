@@ -85,7 +85,6 @@ const addTake = () => {
     
 };
 
-
 const votes = () => {
     // Ensure allChoices contains an array of strings
     const options = allChoices.value.map(choice => {
@@ -109,7 +108,6 @@ const votes = () => {
         id: randomId
     });
 }
-
 </script>
 
 
