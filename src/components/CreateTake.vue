@@ -15,20 +15,7 @@ const auth = getAuth();
 let usersName = []
 let userIcons = []
 let usersid = []
-
-//retrieveing users data by popup
-// const signInWithGithub = () => {
-//     const provider = new GithubAuthProvider();
-//     signInWithPopup(getAuth(), provider)
-//     .then((result) => {
-//         console.log(result.user);
-//         displayNames()
-//         router.push("/home")
-//     })
-//     .catch((error) => {
-
-//     })
-// };
+let useremails = []
 
 onMounted(() => {
     
@@ -38,9 +25,11 @@ onMounted(() => {
             let names  = user.displayName
             let photo  = user.photoURL
             let id  = user.uid
+            let email  = user.email
             usersName.value = names
             userIcons.value = photo
             usersid.value = id
+            useremails.value = email
             // console.log(usersName)
             return usersName
             
@@ -52,6 +41,7 @@ onMounted(() => {
     })
 })
 
+const randomId = Math.floor(Math.random() * 1000000)
 
 //list items to connect with v-modal
 const newTake = ref('');
@@ -60,23 +50,23 @@ const choices = ref("");
 const EndDate = ref("");
 const allChoices = ref([]);
 
-//voting options section. Adding choices into allChoices Array.
 const addChoice = () => {
     if(choices.value.length > 0){
         allChoices.value.push({
-        options:choices.value
-    })
+            option:choices.value,
+            percent:0
+        }
+        
+    )
     choices.value = '';
     return allChoices.value
     }
 }
-
-
 // pushing items into takes array, eventually firebase db
 
 const addTake = () => {
   addDoc(collection(db, 'Takes'), {
-    id: Math.floor(Math.random() * 1000000),
+    id: randomId,
     title: newTake.value,
     description:Description.value,
     options:allChoices.value,
@@ -84,7 +74,8 @@ const addTake = () => {
     date: new Date(Date.now()).toLocaleString(),
     uid:usersid.value,
     uicon:userIcons.value,
-    user:usersName.value
+    user:usersName.value,
+    email:useremails.value
   });
     newTake.value = '';
     EndDate.value = '';
@@ -95,21 +86,36 @@ const addTake = () => {
 };
 
 
+const votes = () => {
+    // Ensure allChoices contains an array of strings
+    const options = allChoices.value.map(choice => {
+        if (typeof choice === 'string') {
+            return { option: choice, percent: 0 };
+        } else {
+            return choice;
+        }
+    });
 
-// onMounted(async() => {
-//     let recipeColection = await getDocs(collection(db, 'personal recipes'))
-//     recipeColection.forEach((recipe) => {
-//         recipes.value.push({...recipe.data(), id: recipe.id})
-//         console.log(recipe.data(), recipe.id)
-//     });
-// })
+    addDoc(collection(db, 'Votes'), {
+        author: {
+            uid: usersid.value,
+            profileImg: userIcons.value,
+            name: usersName.value,
+        },
+        totalVotes:0,
+        voters:[],
+        options: options,
+        title: newTake.value,
+        id: randomId
+    });
+}
 
 </script>
 
 
 <template>
     
-    <div class=" w-full px-[14%] flex flex-col gap-7 text-[--text2-color] text-sm placeholder-[rgba(255,255,255,0.7)]">
+    <div class=" w-full px-[3%] md:px-[14%] flex flex-col gap-7 text-[--text2-color] text-sm placeholder-[rgba(255,255,255,0.7)]">
         
         <div class="flex flex-col gap-2">
             <span class="text-base font-medium">Title</span>
@@ -129,12 +135,12 @@ const addTake = () => {
 
             <div v-for="(items , index) in allChoices" class="flex flex-col gap-1 font-semibold ">
                 <div class="flex justify-between text-yellow-400 text-base">
-                    <div>{{ items.options }}</div>
+                    <div>{{ items.option }}</div>
                     <i class="fa-regular fa-trash-can" @click="allChoices.splice(index, 1);"></i>
                 </div>
             </div>
             
-            <input @keyup.enter="addChoice" v-model = 'choices' name="note" id="note" cols="30" rows="2" class="rounded-lg p-3 bg-[#5349492d] border border-[#53494954] placeholder-[rgba(255,255,255,0.7)]" placeholder="Press enter to add more options"></input>
+            <input @keyup.enter="addChoice" v-model = 'choices' name="note" id="note" cols="30" rows="2" class="rounded-lg p-3 bg-[#5349492d] border border-[#53494954] placeholder-[rgba(255,255,255,0.7)]" placeholder="Press enter to add more options" required></input>
         </div>
         
         <div class="flex flex-col gap-2">
@@ -145,7 +151,7 @@ const addTake = () => {
             </div>
         </div>
 
-        <button @click="addTake" class=" text-base w-full bg-green-500  border-none rounded-lg text-gray-900 cursor-pointer p-2 font-semibold">Create</button>
+        <button @click=" votes(), addTake()" class=" text-base w-full bg-green-500  border-none rounded-lg text-gray-900 cursor-pointer p-2 font-semibold">Create</button>
     </div>
     
 </template>
