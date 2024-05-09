@@ -15,6 +15,7 @@ const auth = getAuth();
 let usersName = []
 let userIcons = []
 let usersid = []
+let useremails = []
 
 onMounted(() => {
     
@@ -24,9 +25,11 @@ onMounted(() => {
             let names  = user.displayName
             let photo  = user.photoURL
             let id  = user.uid
+            let email  = user.email
             usersName.value = names
             userIcons.value = photo
             usersid.value = id
+            useremails.value = email
             // console.log(usersName)
             return usersName
             
@@ -71,7 +74,8 @@ const addTake = () => {
     date: new Date(Date.now()).toLocaleString(),
     uid:usersid.value,
     uicon:userIcons.value,
-    user:usersName.value
+    user:usersName.value,
+    email:useremails.value
   });
     newTake.value = '';
     EndDate.value = '';
@@ -117,11 +121,14 @@ const votes = () => {
             profileImg: userIcons.value,
             name: usersName.value,
         },
-        Vote: {
-            totalVotes: 0,
-            voters: [],
-            options: options,
-        },
+        // Vote: {
+        //     totalVotes: 0,
+        //     voters: [],
+        //     options: options,
+        // },
+        totalVotes:0,
+        voters:[],
+        options: options,
         title: newTake.value,
         id: randomId
     });
@@ -153,7 +160,7 @@ const votes = () => {
 
             <div v-for="(items , index) in allChoices" class="flex flex-col gap-1 font-semibold ">
                 <div class="flex justify-between text-yellow-400 text-base">
-                    <div>{{ items }}</div>
+                    <div>{{ items.option }}</div>
                     <i class="fa-regular fa-trash-can" @click="allChoices.splice(index, 1);"></i>
                 </div>
             </div>

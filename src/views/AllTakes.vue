@@ -1,5 +1,5 @@
 <template >
-  <div class="flex flex-col gap-8 px-[2%] lg:px-[7%]">
+  <div class="flex flex-col gap-8 px-[1%] lg:px-[7%]">
 
     <div class="flex flex-col gap-10">
       <div class="flex items-center gap-2">

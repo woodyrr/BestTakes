@@ -38,7 +38,8 @@ takes.value = snapshot.docs.map((doc) => ({
   created: doc.data().date,
   uid:doc.data().uid,
   uicon:doc.data().uicon,
-  user:doc.data().user
+  user:doc.data().user,
+  email:doc.data().email
   
 }));
 
@@ -65,13 +66,24 @@ onUnmounted(unsubscribe);
         <div class="text-white px-[2%] lg:px-[8%]">
             <div v-for="item in takes">
                 <div v-if="item.id == route.params.id"  class="flex flex-col gap-3">
-                    <div class="flex items-center gap-3">
-                        <div class="rounded-full  border-green-500 border-2 w-8 lg:w-10">
-                            <img :src="item.uicon" alt="" srcset="" class=" rounded-full">
+                    <div class="flex justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="rounded-full  border-green-500 border-2 w-8 lg:w-10">
+                                <img :src="item.uicon" alt="" srcset="" class=" rounded-full">
+                            </div>
+                            <div v-if="item.user" >
+                                <h2 class="text-xs lg:text-sm font-semibold">{{ item.user }}</h2>
+                            </div>
+                            <div class="text-xs lg:text-sm font-semibold" v-else>
+                                <h2 > {{ item.email.slice(0,11) }}</h2>
+                            </div>
+
+                            
+                            
                         </div>
-                        <div class="text-xs lg:text-sm font-semibold">
-                            {{ item.user }}
-                            <!-- {{ item.uid }} -->
+                        <div class="flex gap-1 items-center">
+                            <i class="fa-regular fa-circle rounded-full bg-green-400"></i>
+                            <div class="text-gray-400 text-sm">1 live</div>
                         </div>
                     </div>
 
