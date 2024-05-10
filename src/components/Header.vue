@@ -1,10 +1,10 @@
 <template>
 
-    <header class="text-[--main-white] flex justify-between pt-14 px-[1%] md:px-[7%] ">
+    <header class="text-[--main-white] flex justify-between pt-8 md:pt-14 md:px-[7%] ">
 
         <div class="flex gap-2 justify-center items-center">
             <RouterLink to="/" class="text-3xl font-bold">BestTakes</RouterLink>
-            <i class="fa-regular fa-face-surprise text-red-400 text-lg duration-100 animate-bounce"></i>
+            <i class="fa-regular fa-face-surprise text-yellow-400 text-lg duration-100 animate-bounce"></i>
         </div>
 
         <button @click="overlay = !overlay " v-if="isLoggedIn" class="rounded-full  border-green-500 border-2">
@@ -50,7 +50,7 @@
 <script setup>
 import { RouterLink, useRouter} from 'vue-router'
 import {ref, onMounted} from 'vue'
-import {getAuth,GithubAuthProvider, signInWithPopup, onAuthStateChanged, signOut} from "firebase/auth"
+import {getAuth,GithubAuthProvider, signInWithPopup, onAuthStateChanged, signOut, signInWithRedirect} from "firebase/auth"
 
 //profile/create/logout overlay
 const overlay = ref(false)
@@ -61,27 +61,9 @@ const isLoggedIn = ref(false)
 const router = useRouter()
 const auth = getAuth();
 
-
-//auth user personal info stored in arrays
 let usersName = []
 let userIcons = []
 
-//retrieveing users data by popup
-const signInWithGithub = () => {
-    const provider = new GithubAuthProvider();
-    signInWithPopup(getAuth(), provider)
-    .then((result) => {
-        console.log(result.user);
-        displayNames()
-        router.push("/home")
-    })
-    .catch((error) => {
-
-    })
-};
-
-
-//on/preload fill in users data into specified place
 onMounted(() => {
     
     onAuthStateChanged(auth, (user) => {
@@ -93,8 +75,6 @@ onMounted(() => {
             userIcons.value = photo
             // console.log(usersName)
             // return usersName
-            
-            
         }
         else{
             isLoggedIn.value = false;
@@ -102,6 +82,32 @@ onMounted(() => {
     })
 })
 
+
+
+
+
+// const signInWithGithub = () => {
+//     const provider = new GithubAuthProvider();
+//     if (isMobileDevice()) {
+//         signInWithRedirect(auth, provider);
+//     } else {
+//         signInWithPopup(auth, provider);
+//     }
+// };
+
+const signInWithGithub = async () => {
+    const provider = new GithubAuthProvider();
+    if (isMobileDevice()) {
+        await signInWithRedirect(auth, provider);
+    } else {
+        await signInWithPopup(auth, provider);
+    }
+};
+//on/preload fill in users data into specified place
+const isMobileDevice = () => {
+    const userAgent = navigator.userAgent.toLowerCase();
+    return /android|iphone|ipad|ipod/.test(userAgent);
+};
 
 //SignOut users and redirecting them afterwards.
 const handleSignOut = () => {

@@ -1,169 +1,125 @@
 <template>
-    <!-- <div class="pt-6">
-      <div v-for="poll in polls" :key="poll.id" class="text-white">
-        <div class="flex flex-col gap-2 w-full px-[2%] lg:px-[9%]">
-          <div class="text-[24px] font-semibold">{{ poll.title }}</div>
-          <div>{{ poll.description }}</div>
-          <div>1 live on this vote channel</div>
-          <div v-if="poll.options" class="flex gap-20 pt-20">
-            <div class="flex flex-col gap-5 lg:gap-10">
-              <div v-for="option in poll.options" :key="option" class="text-[20px]">
-                <button @click="voteForOption(poll.id, option)" class="flex gap-2 items-center">
-                  <i class="fa-regular fa-circle"></i>
-                  {{ option }}
-                </button>
-              </div>
-            </div>
-            <div class="border"></div>
-            <div>
-              Total Votes: {{ poll.votes.totalVotes }}
-            </div>
-          </div>
-        </div>
+
+  <header class="text-[--main-white] flex justify-between pt-8 md:pt-14 md:px-[7%] ">
+
+      <div class="flex gap-2 justify-center items-center">
+          <RouterLink to="/" class="text-3xl font-bold">BestTakes</RouterLink>
+          <i class="fa-regular fa-face-surprise text-yellow-400 text-lg duration-100 animate-bounce"></i>
       </div>
-    </div> -->
 
+      <button @click="overlay = !overlay " v-if="isLoggedIn" class="rounded-full  border-green-500 border-2">
+          <img :src="userIcons.value" alt="" srcset="" class="w-14 rounded-full">
+      </button>
 
-    <div class="pt-6">
-        <div v-for="item in takes" class=" text-white">
-            <div class="flex flex-col gap-2 w-full px-[2%] lg:px-[9%]" v-if="item.id == route.params.id">
-                <div class="text-[24px] font-semibold">
-                    {{ item.title }}
-                </div>
-                <div>
-                    {{ item.description }}
-                </div>
-                <div>
-                    1 live on this vote channel
-                </div>
-                <div v-if="item.options" class="flex gap-20 pt-20">
-                    <div class="flex flex-col gap-5 lg:gap-10">
-                    <div v-for="option in item.options" :key="option" class="text-[20px]">
-                        <button @click="voteForOption(item.id, option)" class="flex gap-2 items-center">
-                        <i class="fa-regular fa-circle"></i>
-                        {{ option }}
-                        </button>
-                    </div>
-                    </div>
-                    <div class="border"></div>
-                    <div>
-                    Total Votes: {{ item.votes.totalVotes }}
-                    </div>
-                </div>
-            </div>
-        </div>
+      <button v-else="!isLoggedIn" @click="signInWithGithub" class="bg-transparent flex px-3 lg:px-5 py-2 duration-300 hover:bg-zinc-700 gap-2 justify-center items-center border rounded-md 2xl:text-[17px]">
+          <i class="fa-brands fa-github"></i>
+          <h2>Login</h2>
+      </button>
 
+      <!-- profile/create/logout overlay -->
+      <transition name="nav" class="right-0 mt-16 px-[17%] z-10" v-motion-slide-top >
+          <div v-if="overlay"  class="fixed  opacity">
+              <div class="bg-[rgba(22,20,22,255)] border border-[#53494954] p-2 flex flex-col gap-2 w-64 rounded-lg text-base font-medium text-[--text2-color]">
+      
+                  <RouterLink to="/create" @click="overlay = !overlay" class="flex justify-between items-center gap-4 hover:bg-[#09090B] px-4 py-2 rounded-md">
+                      <div class="text-[--text2-color]">Profile</div>
+                      <i class="fa-solid fa-gear text-[#999595]"></i>
+                  </RouterLink>
 
-        <!-- <div  v-for="poll in polls" class=" text-white">
-            <div class="flex flex-col gap-2 w-full px-[2%] lg:px-[9%]">
-                
-                <div v-if="poll.options" class="flex gap-20 pt-20">
-                    <div class="flex flex-col gap-5 lg:gap-10">
-                    <div v-for="option in poll.options" :key="option" class="text-[20px]">
-                        <button @click="voteForOption(poll.id, option)" class="flex gap-2 items-center">
-                        <i class="fa-regular fa-circle"></i>
-                        {{ option }}
-                        </button>
-                    </div>
-                    </div>
-                    <div class="border"></div>
-                    <div>
-                    Total Votes: {{ poll.votes.totalVotes }}
-                    </div>
-                </div>
-            </div>
-        </div> -->
-    </div>
+                  <RouterLink to="/create" @click="overlay = !overlay" class="flex justify-between items-center gap-4 hover:bg-[#09090B] px-4 py-2 rounded-md">
+                      <div>Create</div>
+                      <i class="fa-solid fa-plus text-[#999595]"></i>
+                  </RouterLink>
+                  
+                  <div class="flex flex-col gap-2">
+                      <div class="border border-[#53494954]"></div>
+
+                      <button v-if="isLoggedIn" to="/create" @click="handleSignOut(), overlay = !overlay" class="flex justify-between items-center gap-4 hover:bg-[#09090B] px-4 py-2 rounded-md">
+                          <div>Logout</div>
+                          <i class="fa-solid fa-unlock text-[#999595]"></i>
+                      </button>
+                  </div>
+              </div>
+          </div>
+      </transition>
+      <!-- v-motion :initial="{opacity:0 }" :visible="{opacity:1, animationDuration:2}" -->
+  </header>
 </template>
 
+
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
-import { useRoute } from 'vue-router';
-import db from '../main.js';
-// import { collection, onSnapshot, doc, updateDoc } from "firebase/firestore";
-import { collection,  orderBy, onSnapshot, doc, query , updateDoc} from "firebase/firestore"; 
+import { RouterLink, useRouter} from 'vue-router'
+import {ref, onMounted} from 'vue'
+import {getAuth,GithubAuthProvider, signInWithPopup, onAuthStateChanged, signOut, signInWithRedirect} from "firebase/auth"
 
-const route = useRoute();
-const polls = ref([]);
+//profile/create/logout overlay
+const overlay = ref(false)
 
-const voteForOption = async (pollId, option) => {
-  const pollRef = doc(db, 'Votes', pollId);
-  const pollSnapshot = await pollRef.get();
-  const pollData = pollSnapshot.data();
 
-  // Increment the vote count for the selected option
-  pollData.options[option]++;
+// Authentication process stuff
+const isLoggedIn = ref(false)
+const router = useRouter()
+const auth = getAuth();
 
-  // Update the poll document in Firestore
-  await updateDoc(pollRef, pollData);
+let usersName = []
+let userIcons = []
+
+//retrieveing users data by popup
+
+const signInWithGithub = () => {
+  const provider = new GithubAuthProvider();
+  signInWithPopup(getAuth(), provider)
+  .then((result) => {
+      console.log(result.user);
+      displayNames()
+      router.push("/home")
+  })
+  .catch((error) => {
+
+  })
 };
 
-// onMounted(() => {
-//   const voteCollection = collection(db, 'Votes');
-//   const unsubscribe = onSnapshot(voteCollection, (snapshot) => {
-//     polls.value = snapshot.docs.map((doc) => ({
-//       id: doc.id,
-//       description: doc.data().Description,
-//       title: doc.data().title,
-//       options: doc.data().options,
-//       deadline: doc.data().endDate,
-//       created: doc.data().date,
-//       uid: doc.data().uid,
-//       uicon: doc.data().uicon,
-//       user: doc.data().user,
-//       votes: doc.data().votes // Assuming votes are stored within the poll document
-//     }));
-//   });
 
-//   // Unsubscribe from snapshot listener when component is unmounted
-//   onUnmounted(unsubscribe);
-// });
-
-
-const takes = ref([]);
-
+//on/preload fill in users data into specified place
 onMounted(() => {
-const takeCollection = query(collection(db, 'Takes'), orderBy('date', 'desc'));
-
-const unsubscribe = onSnapshot(takeCollection, (snapshot) => {
-takes.value = snapshot.docs.map((doc) => ({
-  id: doc.id,
-  description: doc.data().Description,
-  title: doc.data().title,
-  options: doc.data().options,
-  deadline:doc.data().endDate,
-  created: doc.data().date,
-  uid:doc.data().uid,
-  uicon:doc.data().uicon,
-  user:doc.data().user
   
-}));
+  onAuthStateChanged(auth, (user) => {
+      if (user) {
+          isLoggedIn.value = true;
+          let names  = user.displayName
+          let photo  = user.photoURL
+          usersName.value = names
+          userIcons.value = photo
+          // console.log(usersName)
+          // return usersName
+      }
+      else{
+          isLoggedIn.value = false;
+      }
+  })
+})
 
 
-
-
-});
-console.log(takes)
-const voteCollection = query(collection(db, 'Votes'), orderBy('date', 'desc'));
-const unsubscribe2 = onSnapshot(voteCollection, (snapshot) => {
-    polls.value = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      description: doc.data().Description,
-      title: doc.data().title,
-      options: doc.data().options,
-      deadline: doc.data().endDate,
-      created: doc.data().date,
-      uid: doc.data().uid,
-      uicon: doc.data().uicon,
-      user: doc.data().user,
-      votes: doc.data().votes // Assuming votes are stored within the poll document
-    }));
-  });
-// Unsubscribe from snapshot listener when component is unmounted
-onUnmounted(unsubscribe);
-onUnmounted(unsubscribe2);
-});
-
-
-
+//SignOut users and redirecting them afterwards.
+const handleSignOut = () => {
+  signOut(auth).then(() => {
+      router.push("/")
+  })
+};
 </script>
+
+
+<style>
+/* profile/create/logout overlay Animation */
+.nav-enter-from {
+opacity: 0;
+transition: visibility 1s, opacity 0.5s ease-out ;
+}
+
+.nav-enter-to {
+opacity: 1;
+}
+.nav-enter-active {
+transition: all transform 0.4s ease-out, visibility 2s;
+}
+</style>
