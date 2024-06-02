@@ -1,35 +1,52 @@
 <template>
-<!-- v-if="item.id == route.params.id" -->
-<div class="pt-4 md:pt-6">
-    <!-- //options -->
-    <div v-for="item in votes" class=" text-white" >
-        
-        <div class="flex flex-col gap-6 xl:gap-10 w-full px-[2%] lg:px-[8%]" v-if="item.id == route.params.id">
+    <div class="pt-4 md:pt-6">
+    
+        <div v-for="item in votes" class=" text-white" >
             
-            <div v-if="item.options"  class="">
-                <div v-for="(vote, i)  in item.options" :key="vote" class="text-[20px] flex flex-col gap-4 xl:gap-8">
-                    <button @click="voteCollection(item.docId, i, vote.percent, item.totalVotes)" class="flex gap-2 items-center bg-[#dcfd1e10] border border-gray-700 rounded-lg w-full p-4" :id="i"  v-bind:id="i">
-                        <i class="fa-regular fa-circle"></i>
-                        <div class="flex justify-between w-full">
-                            <div>{{vote.option}}</div>
-                            <div>{{vote.percent}}%</div>
-                        </div>
-                    </button>
-                    <div> 
-                </div>
-            </div>     
-            <div class="text-sm lg:text-base font-medium text-gray-300">{{ item.totalVotes }} votes</div>
+            <div class="flex flex-col gap-6 xl:gap-10 " v-if="item.id == route.params.id">
                 
+                <div v-if="item.options"  class="">
+                    <!-- <div v-for="(vote, i)  in item.options" :key="vote" class="text-[20px] flex flex-col gap-4 xl:gap-8">
+                        <button @click="voteCollection(item.docId, i, vote.percent, item.totalVotes)" class="flex gap-2 items-center bg-[#dcfd1e10] border border-gray-700 rounded-lg w-full p-2 lg:p-3" :id="i"  v-bind:id="i">
+                            <i class="fa-regular fa-circle"></i>
+                            <div class="flex justify-between w-full">
+                                <div>{{vote.option}}</div>
+                                <div>{{(vote.percent / item.totalVotes).toFixed(2) * 100}}%</div>
+                            </div>
+                        </button>
+                        <div> 
+                    </div> -->
+                    <div v-for="(vote, i)  in item.options" :key="vote" class="text-[20px] flex flex-col gap-4 xl:gap-5 w-full">
+                        <button @click="voteCollection(item.docId, i, vote.percent, item.totalVotes)" class="flex justify-between gap-2 items-center"  :id="i"  v-bind:id="i">
+                            <div class="flex gap-2 justify-between bg-[#dcfd1e00] w-full rounded-r-lg relative py-[1px]">
+                                <div class="flex justify-between gap-1  bg-green-600 rounded-r-full lg:p-2"  :style="{ width: (vote.percent) / (item.totalVotes).toFixed(2) * 100  + '%' }">
+                                    <div >{{vote.option}}</div> 
+                                    
+                                </div>
+                                
+                            </div>
+                            <div>{{(vote.percent / item.totalVotes).toFixed(2) * 100}}%</div>
+                            <!-- <div class="flex justify-between w-[{{ (vote.percent / item.totalVotes).toFixed(2) * 100 }}] bg-green-300 w-[100%]">
+                                <div>{{vote.option}}</div>
+                                <div>{{(vote.percent / item.totalVotes).toFixed(2) * 100}}%</div>
+                            </div> -->
+                        </button>
+                        
+                        <div> 
+                    </div>
+                    
+                </div>     
+                <div class="text-sm lg:text-base font-medium text-gray-300">{{ item.totalVotes }} votes</div>
+                    
+                </div>
             </div>
             
         </div>
-        
+
     </div>
-
-</div>
-
-
 </template>
+
+
 
 <script setup>
 
@@ -93,7 +110,7 @@ onUnmounted(unsubscribe);
 
 const voteCollection = async (id, i, percent,total) => {
     try {
-        const userId = usersid.value; // Get the current user's ID
+        const userId = usersid.value; 
 
         const voteDocRef = doc(db, 'Votes', id);
         const docSnapshot = await getDoc(voteDocRef);
@@ -106,8 +123,19 @@ const voteCollection = async (id, i, percent,total) => {
                 return;
             }
 
-            voteData.options[i].percent = ((percent + 1) / (total + 1)) * 100; // Calculate percentage
-            voteData.totalVotes = total + 1;
+            // if(voteData.options[i].percent == 100){
+            //     voteData.options[i].percent = 100; if the percent = 100 change calculation. 
+            //     voteData.totalVotes = total + 1;
+            // }
+            // else{
+                // voteData.options[i].percent = ((percent + 1) / (total + 1)) * 100; 
+                voteData.options[i].percent = ((percent + 1) / (total + 1));
+                
+                voteData.options[i].percent = percent + 1 
+                voteData.totalVotes = total + 1;
+            // }
+
+            
 
 
             if (!voteData.voters) {
