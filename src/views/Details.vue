@@ -54,7 +54,7 @@ onMounted(() => {
             isLoggedIn.value = false;
         }
     })
-// })
+
     const today = new Date();
     const formatDate = (date) => {
         const deadline = new Date(date);
@@ -62,15 +62,12 @@ onMounted(() => {
         const days = Math.floor(difference / (1000 * 60 * 60 * 24));
         const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-        // const seconds = Math.floor((difference % (1000 * 60)) / 1000);
         if(days < 0 || hours < 0 || minutes < 0 ){
             return `${0}d: ${0}h: ${0}m`
         }
         else{
             return `${days}d: ${hours}h: ${minutes}m`;
         }
-        // return `${days}d: ${hours}h: ${minutes}m`;
-        // M: ${seconds}S
     };
 
     
@@ -95,15 +92,10 @@ onMounted(() => {
 
     });
 
-
     // Unsubscribe from snapshot listener when component is unmounted
     onUnmounted(unsubscribe);
 
 });
-
-// setInterval(() => {
-//         console.log(formatDate(takes.deadline))
-//     }, 1000);
 
 </script>
 
@@ -122,38 +114,19 @@ onMounted(() => {
                 <div class="text-white ">
                     <div v-for="item in takes">
                         <div v-if="item.id == route.params.id"  class="flex flex-col gap-3">
-                            <!-- <div class="flex justify-between">
-                                <div class="flex items-center gap-3">
-                                    <div class="rounded-full  border-green-500 border-2 w-8 lg:w-10">
-                                        <img :src="item.uicon" alt="" srcset="" class=" rounded-full">
-                                    </div>
-                                    <div v-if="item.user" >
-                                        <h2 class="text-xs lg:text-sm font-semibold">{{ item.user }}</h2>
-                                    </div>
-                                    <div class="text-xs lg:text-sm font-semibold" v-else>
-                                        <h2 > {{ item.email.slice(0,11) }}</h2>
-                                    </div>
-
-                                    
-                                    
-                                </div>
-                                <div class="flex gap-1 items-center">
-                                    <i class="fa-regular fa-circle rounded-full bg-green-400"></i>
-                                    <div class="text-gray-400 text-sm">1 live</div>
-                                </div>
-                            </div> -->
 
                             <div class="flex flex-col gap-2 w-full">
                                 <div class="text-[28px] font-semibold text-gray-100">
                                     {{ item.title }}
                                 </div>
+                                <div class="text-gray-400 text-sm lg:text-base">
+                                    {{ item.description }}
+                                </div>
                                 <div class="text-gray-400 flex gap-2 items-center text-lg">
                                     <i class="fa-solid fa-clock-rotate-left text-green-400"></i>
                                     {{ item.remainingTime }} 
                                 </div>
-                                <!-- <div class="text-gray-400 lg:text-lg">
-                                    {{ item.description }}
-                                </div> -->
+                                
                             </div>
 
                         </div> 
@@ -162,15 +135,13 @@ onMounted(() => {
                 </div>
                 <voting />
             </div>
-            <div class="">
+            <div class="flex items-center">
                 <comment />
             </div>
             
-        </div>
-        
-        
-        
+        </div> 
     </div>
+
     <div v-else class="text-white flex flex-col gap-24 px-[2%] lg:px-[8%]">
         <div class="text-white ">
             <div v-for="item in takes">
