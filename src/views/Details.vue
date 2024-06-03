@@ -116,8 +116,8 @@ onMounted(() => {
 </style>
 
 <template>
-    <div v-if="isLoggedIn" class=" px-[2%] lg:px-[8%]">
-        <div class="grid grid-cols-2 gap-2 ">
+    <div v-if="isLoggedIn" class="sm:px-[1%] lg:px-[7%]">
+        <div class="grid md:grid-cols-2 gap-2 ">
             <div class="flex flex-col">
                 <div class="text-white ">
                     <div v-for="item in takes">
@@ -144,7 +144,7 @@ onMounted(() => {
                             </div> -->
 
                             <div class="flex flex-col gap-2 w-full">
-                                <div class="text-[28px] font-semibold text-yellow-400">
+                                <div class="text-[28px] font-semibold text-gray-100">
                                     {{ item.title }}
                                 </div>
                                 <div class="text-gray-400 flex gap-2 items-center text-lg">
