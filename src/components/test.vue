@@ -79,6 +79,7 @@ const signInWithGithub = () => {
   })
 };
 
+// As a Software Developer, I mainly focus on creating robust applications using Javascript, with a particular emphasis on the Vuejs framework. My competencies have been honed through practical, hands-on experience. Since freelancing at Upwork in September 2023, I have worked on several projects, leveraging my expertise in Javascript to enhance product functionality and user experience. My approach integrates a deep understanding of these technologies to deliver scalable and efficient solutions.
 
 //on/preload fill in users data into specified place
 onMounted(() => {

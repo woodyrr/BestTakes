@@ -1,6 +1,6 @@
 <template>
 
-    <header class="text-[--main-white] flex justify-between pt-8 md:pt-14 md:px-[7%] ">
+    <header class="text-[--main-white] flex justify-between pt-8 md:pt-14 sm:px-[1%] lg:px-[7%] ">
 
         <div class="flex gap-2 justify-center items-center">
             <RouterLink to="/" class="text-3xl font-bold">BestTakes</RouterLink>
@@ -21,10 +21,10 @@
             <div v-if="overlay"  class="fixed  opacity">
                 <div class="bg-[rgba(22,20,22,255)] border border-[#53494954] p-2 flex flex-col gap-2 w-64 rounded-lg text-base font-medium text-[--text2-color]">
         
-                    <RouterLink to="/create" @click="overlay = !overlay" class="flex justify-between items-center gap-4 hover:bg-[#09090B] px-4 py-2 rounded-md">
+                    <!-- <RouterLink to="/create" @click="overlay = !overlay" class="flex justify-between items-center gap-4 hover:bg-[#09090B] px-4 py-2 rounded-md">
                         <div class="text-[--text2-color]">Profile</div>
                         <i class="fa-solid fa-gear text-[#999595]"></i>
-                    </RouterLink>
+                    </RouterLink> -->
 
                     <RouterLink to="/create" @click="overlay = !overlay" class="flex justify-between items-center gap-4 hover:bg-[#09090B] px-4 py-2 rounded-md">
                         <div>Create</div>
@@ -95,19 +95,31 @@ onMounted(() => {
 //     }
 // };
 
-const signInWithGithub = async () => {
+// const signInWithGithub = async () => {
+//     const provider = new GithubAuthProvider();
+//     if (isMobileDevice()) {
+//         await signInWithRedirect(auth, provider);
+//     } else {
+//         await signInWithPopup(auth, provider);
+//     }
+// };
+const signInWithGithub = () => {
     const provider = new GithubAuthProvider();
-    if (isMobileDevice()) {
-        await signInWithRedirect(auth, provider);
-    } else {
-        await signInWithPopup(auth, provider);
-    }
+    signInWithPopup(getAuth(), provider)
+    .then((result) => {
+        console.log(result.user);
+        displayNames()
+        router.push("/home")
+    })
+    .catch((error) => {
+
+    })
 };
 //on/preload fill in users data into specified place
-const isMobileDevice = () => {
-    const userAgent = navigator.userAgent.toLowerCase();
-    return /android|iphone|ipad|ipod/.test(userAgent);
-};
+// const isMobileDevice = () => {
+//     const userAgent = navigator.userAgent.toLowerCase();
+//     return /android|iphone|ipad|ipod/.test(userAgent);
+// };
 
 //SignOut users and redirecting them afterwards.
 const handleSignOut = () => {

@@ -119,12 +119,12 @@ const votes = () => {
         
         <div class="flex flex-col gap-2">
             <span class="text-base font-medium">Title</span>
-            <input type="text" v-model = 'newTake' name="Name" placeholder="Your best take is..." class=" px-3 py-2 rounded-lg bg-[#5349492d] border border-[#53494954] placeholder-[rgba(255,255,255,0.7)]">
+            <input type="text" v-model = 'newTake' name="Name" placeholder="Your best take is..." class=" px-3 py-2 rounded-lg bg-[#5349492d] duration-300 border hover:border-[#3c4a88] border-[#53494954] placeholder-[rgba(255,255,255,0.7)] outline ring-1 ring-[#53494954] outline-0 outline-gray-100">
         </div>
         
         <div class="flex flex-col gap-2">
             <span class="text-base font-medium">Description</span>
-            <input v-model = 'Description' name="note" id="note" cols="30" rows="2" class="rounded-lg p-3 bg-[#5349492d] border border-[#53494954] placeholder-[rgba(255,255,255,0.7)] py-3" placeholder="(optional) Take description..."></input>
+            <input v-model = 'Description' name="note" id="note" cols="30" rows="2" class="rounded-lg p-3 bg-[#5349492d] duration-300 border hover:border-[#3c4a88] border-[#53494954] placeholder-[rgba(255,255,255,0.7)] py-3 outline ring-1 ring-[#53494954] outline-0 outline-gray-100" placeholder="(optional) Take description..."></input>
         </div>
         <div class="flex flex-col gap-2">
 
@@ -140,14 +140,14 @@ const votes = () => {
                 </div>
             </div>
             
-            <input @keyup.enter="addChoice" v-model = 'choices' name="note" id="note" cols="30" rows="2" class="rounded-lg p-3 bg-[#5349492d] border border-[#53494954] placeholder-[rgba(255,255,255,0.7)]" placeholder="Press enter to add more options" required></input>
+            <input @keyup.enter="addChoice" v-model = 'choices' name="note" id="note" cols="30" rows="2" class="rounded-lg p-3 bg-[#5349492d] duration-300 border hover:border-[#3c4a88] border-[#53494954] placeholder-[rgba(255,255,255,0.7)] outline ring-1 ring-[#53494954] outline-0 outline-gray-100" placeholder="Press enter to add more options" required></input>
         </div>
         
         <div class="flex flex-col gap-2">
             <span class="text-base font-medium">End date</span>
-            <div class="flex rounded-lg justify-between items-center p-1 bg-[#5349492d] border border-[#53494954] duration-300 hover:bg-[#53494971]  hover:border-[#53494954] hover:text-[rgba(255,255,255,0.7)] px-2">
+            <div class="flex rounded-lg justify-between items-center p-1 bg-[#5349492d] border border-[#53494954] duration-300  hover:bg-[#53494954]  hover:border-[#53494954] hover:text-[rgba(255,255,255,0.7)] px-2">
                 <span class="text-[rgba(255,255,255,0.7)]">Pick a date</span>
-                <input v-model = 'EndDate' type="date"  class="rounded-lg p-1 text-[17px] text-white bg-transparent  text-[rgba(255,255,255,0.7)]" required>
+                <input v-model = 'EndDate' type="date"  class="rounded-lg p-1 text-[17px] text-white bg-transparent  text-[rgba(255,255,255,0.7)] " required>
             </div>
         </div>
 
