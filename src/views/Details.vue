@@ -6,7 +6,6 @@ import db from '../main.js'
 import { collection, addDoc, getDocs, orderBy, onSnapshot, doc, deleteDoc, query } from "firebase/firestore"; 
 import voting from "../components/Voting.vue"
 import comment from "../components/Comments.vue"
-import tests from "../components/test.vue"
 const route = useRoute();
 
 // const vote = ref(0);
@@ -62,13 +61,13 @@ onMounted(() => {
         const days = Math.floor(difference / (1000 * 60 * 60 * 24));
         const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-
         if(days < 0 || hours < 0 || minutes < 0 ){
             return `${0}d: ${0}h: ${0}m`
         }
         else{
             return `${days}d: ${hours}h: ${minutes}m`;
         }
+    };
 
     
 

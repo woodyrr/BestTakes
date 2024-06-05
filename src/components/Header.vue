@@ -1,6 +1,5 @@
 <template>
 
-
     <header class="text-[--main-white] flex justify-between pt-8 md:pt-14 sm:px-[1%] lg:px-[7%] ">
 
         <div class="flex gap-2 justify-center items-center">
@@ -96,6 +95,14 @@ onMounted(() => {
 //     }
 // };
 
+// const signInWithGithub = async () => {
+//     const provider = new GithubAuthProvider();
+//     if (isMobileDevice()) {
+//         await signInWithRedirect(auth, provider);
+//     } else {
+//         await signInWithPopup(auth, provider);
+//     }
+// };
 const signInWithGithub = () => {
     const provider = new GithubAuthProvider();
     signInWithPopup(getAuth(), provider)
@@ -108,7 +115,11 @@ const signInWithGithub = () => {
 
     })
 };
-
+//on/preload fill in users data into specified place
+// const isMobileDevice = () => {
+//     const userAgent = navigator.userAgent.toLowerCase();
+//     return /android|iphone|ipad|ipod/.test(userAgent);
+// };
 
 //SignOut users and redirecting them afterwards.
 const handleSignOut = () => {

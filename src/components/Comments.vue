@@ -8,7 +8,7 @@
             <input type="text" @keyup.enter="addComment" v-model = 'newComment' name="Name" placeholder="Comment..." class=" px-3 py-2 rounded-lg bg-[#5349492d] placeholder-[rgba(255,255,255,0.77)] outline ring-1 ring-[#26722dab] outline-0 outline-gray-100 w-full text-white text-xs sm:text-sm">
             <div v-for="item in comments">
                 <div v-if="item.Routeid == route.params.id" class="">
-                    <div class="flex items-center gap-2 lg:gap-3 border border-x-0 border-t-0 border-[#53494954] pb-2">
+                    <div class="flex items-center gap-2 lg:gap-3 border border-x-0 border-t-0 border-[#53494954]">
                         <img :src="item.uicon" alt="" srcset="" class="w-7 md:w-8 xl:w-10 rounded-full">
                         <div class="text-white">
                             <div class="flex items-center gap-1 text-yellow-200">
@@ -31,7 +31,7 @@
                 
             </div>
            
-        </section>
+        </section> 
     </div>
 </template>
 
@@ -45,9 +45,7 @@ import { useRoute, RouterLink, useRouter} from 'vue-router';
 import {getAuth,GithubAuthProvider, signInWithPopup, onAuthStateChanged, signOut} from "firebase/auth"
 import db from '../main.js'
 import { collection, addDoc, getDocs, orderBy, onSnapshot, doc, deleteDoc, query } from "firebase/firestore"; 
-import voting from "../components/Voting.vue"
-import comment from "../components/Comments.vue"
-import tests from "../components/test.vue"
+
 const route = useRoute();
 
 // const vote = ref(0);
