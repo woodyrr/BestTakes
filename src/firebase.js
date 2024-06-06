@@ -1,12 +1,8 @@
-import db from './main'
-import { collection, addDoc, getDocs, orderBy, onSnapshot, doc, deleteDoc, query } from "firebase/firestore"; 
-import {getAuth,GithubAuthProvider, signInWithPopup, onAuthStateChanged, signOut} from "firebase/auth";
-import {ref, onMounted, onUnmounted, onBeforeUnmount} from 'vue'
+import {getAuth, onAuthStateChanged} from "firebase/auth";
+import {ref, onMounted} from 'vue'
 
 const isLoggedIn = ref(false)
-// const router = useRouter()
 const auth = getAuth();
-
 
 //auth user personal info stored in arrays
 let usersName = []

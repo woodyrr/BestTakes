@@ -21,10 +21,6 @@
             <div v-if="overlay"  class="fixed  opacity">
                 <div class="bg-[rgba(22,20,22,255)] border border-[#53494954] p-2 flex flex-col gap-2 w-64 rounded-lg text-base font-medium text-[--text2-color]">
         
-                    <!-- <RouterLink to="/create" @click="overlay = !overlay" class="flex justify-between items-center gap-4 hover:bg-[#09090B] px-4 py-2 rounded-md">
-                        <div class="text-[--text2-color]">Profile</div>
-                        <i class="fa-solid fa-gear text-[#999595]"></i>
-                    </RouterLink> -->
 
                     <RouterLink to="/create" @click="overlay = !overlay" class="flex justify-between items-center gap-4 hover:bg-[#09090B] px-4 py-2 rounded-md">
                         <div>Create</div>
@@ -50,7 +46,7 @@
 <script setup>
 import { RouterLink, useRouter} from 'vue-router'
 import {ref, onMounted} from 'vue'
-import {getAuth,GithubAuthProvider, signInWithPopup, onAuthStateChanged, signOut, signInWithRedirect} from "firebase/auth"
+import {getAuth,GithubAuthProvider, signInWithPopup, onAuthStateChanged, signOut} from "firebase/auth"
 
 //profile/create/logout overlay
 const overlay = ref(false)
@@ -73,8 +69,7 @@ onMounted(() => {
             let photo  = user.photoURL
             usersName.value = names
             userIcons.value = photo
-            // console.log(usersName)
-            // return usersName
+            
         }
         else{
             isLoggedIn.value = false;
@@ -83,31 +78,11 @@ onMounted(() => {
 })
 
 
-
-
-
-// const signInWithGithub = () => {
-//     const provider = new GithubAuthProvider();
-//     if (isMobileDevice()) {
-//         signInWithRedirect(auth, provider);
-//     } else {
-//         signInWithPopup(auth, provider);
-//     }
-// };
-
-// const signInWithGithub = async () => {
-//     const provider = new GithubAuthProvider();
-//     if (isMobileDevice()) {
-//         await signInWithRedirect(auth, provider);
-//     } else {
-//         await signInWithPopup(auth, provider);
-//     }
-// };
 const signInWithGithub = () => {
     const provider = new GithubAuthProvider();
     signInWithPopup(getAuth(), provider)
     .then((result) => {
-        console.log(result.user);
+        // console.log(result.user);
         displayNames()
         router.push("/home")
     })
@@ -115,11 +90,7 @@ const signInWithGithub = () => {
 
     })
 };
-//on/preload fill in users data into specified place
-// const isMobileDevice = () => {
-//     const userAgent = navigator.userAgent.toLowerCase();
-//     return /android|iphone|ipad|ipod/.test(userAgent);
-// };
+
 
 //SignOut users and redirecting them afterwards.
 const handleSignOut = () => {

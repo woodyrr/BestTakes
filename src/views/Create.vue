@@ -1,5 +1,4 @@
 <template>
-    
     <div v-if="isLoggedIn">
         <create />
     </div>

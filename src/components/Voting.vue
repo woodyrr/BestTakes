@@ -5,7 +5,7 @@
             
             <div class="flex  gap-6 xl:gap-10 w-full" v-if="item.id == route.params.id">
                 
-                <div v-if="item.options" class="flex flex-col w-full">
+                <div v-if="item.options" class="flex flex-col w-full ">
                     <div v-for="(vote, i)  in item.options" :key="vote" class="text-[20px]  gap-3 xl:gap-5 w-full">
 
                             <button @click="voteCollection(item.docId, i, vote.percent, item.totalVotes)" class="flex w-full justify-between items-center gap-2 rounded-lg text-gray-300 duration-300 hover:text-green-400 "  :id="i"  v-bind:id="i">
@@ -18,10 +18,29 @@
                             </button>
                     
                     </div>
-                    
-                    <div class="text-sm lg:text-base font-medium text-blue-300 pt-6">{{ item.totalVotes }} votes</div>
-                </div>
 
+                    <div class="flex flex-col gap-1 lg:gap-3 ">
+                        <div class="text-sm lg:text-base font-medium text-blue-300 pt-6">{{ item.totalVotes }} votes</div>
+
+                        <div v-for="(vote, i) in item.voter" class="flex text-[12px] md:text-[14px]  gap-3 lg:gap-5 w-full">
+                            
+                            <!-- <div v-if="i.date && i.choice" class="text-white flex flex-col lg:flex-row gap-2"> -->
+                            <div v-if="vote.usersid == usersid.value" class="text-white flex flex-col lg:flex-row gap-2">
+                                <div class="flex gap-2 items-center">
+                                    <i class="fa-solid fa-circle-info md:text-base text-gray-400"></i>
+                                    <div>You voted</div>
+                                    <div class="text-green-400 font-medium text-[12px] md:text-[15px]">{{ vote.choice }}</div> 
+                                </div>
+                                
+                                 <div>On {{ formatDate(vote.date) }}</div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+                    
+                </div>
+                
             </div>
             
         </div>
@@ -30,7 +49,6 @@
 
 </template>
 
-
 <script setup>
 
 import {ref, onMounted, onUnmounted} from 'vue'
@@ -38,17 +56,20 @@ import {getAuth, onAuthStateChanged} from "firebase/auth"
 import { useRoute} from 'vue-router';
 import db from '../main.js'
 import { collection, onSnapshot, doc, query, updateDoc, getDoc} from "firebase/firestore"; 
+
 const route = useRoute();
 const votes = ref([]);
-
 const isLoggedIn = ref(false)
-
 const auth = getAuth();
 
 let usersName = []
 let userIcons = []
 let usersid = []
 
+const formatDate = (date) => {
+  const options = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric', hour:'numeric', minute:'numeric' };
+  return new Date(date).toLocaleDateString('en-US', options);
+};
 
 onMounted(() => {
     
@@ -61,9 +82,6 @@ onMounted(() => {
             usersName.value = names
             userIcons.value = photo
             usersid.value = id
-            // console.log(usersName)
-            return usersName
-            
             
         }
         else{
@@ -81,7 +99,8 @@ votes.value = snapshot.docs.map((doc) => ({
   totalVotes: doc.data().totalVotes,
   author:doc.data().author,
   id:doc.data().id,
-  docId:doc.id
+  docId:doc.id,
+  voter:doc.data().voters
 }));
 
 });
@@ -108,13 +127,20 @@ const voteCollection = async (id, i, percent,total) => {
             
             voteData.options[i].percent = percent + 1 
             voteData.totalVotes = total + 1;
-            
+
+            voteData.voters.push({
+                    usersid:userId,
+                    date:new Date(Date.now()).toLocaleString(),
+                    choice:voteData.options[i].option
+                });
+
             if (!voteData.voters) {
                 voteData.voters = [userId];
-            } else {
+            } 
+            else {
                 voteData.voters.push(userId);
             }
-            // Update the document in Firestore
+        
             await updateDoc(voteDocRef, voteData);
             console.log("Vote option updated successfully");
         } else {
@@ -124,10 +150,6 @@ const voteCollection = async (id, i, percent,total) => {
         console.error("Error updating vote option:", error);
     }
 };
-
-// Add a new document with a generated id.
-
-
 
 
 </script>

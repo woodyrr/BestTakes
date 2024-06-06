@@ -2,14 +2,13 @@
 import {ref, onMounted, onUnmounted } from 'vue'
 import {useRouter} from 'vue-router'
 import db from '../main.js'
-import { collection, addDoc, getDocs, orderBy, onSnapshot, doc, deleteDoc, query } from "firebase/firestore"; 
-import {getAuth,GithubAuthProvider, signInWithPopup, onAuthStateChanged, signOut} from "firebase/auth"
+import { collection, addDoc} from "firebase/firestore"; 
+import {getAuth, onAuthStateChanged} from "firebase/auth"
 
 
 const isLoggedIn = ref(false)
 const router = useRouter()
 const auth = getAuth();
-
 
 //auth user personal info stored in arrays
 let usersName = []
@@ -82,7 +81,6 @@ const addTake = () => {
     allChoices.value = '';
     Description.value = '';
     router.push("/");
-    
 };
 
 
@@ -146,8 +144,8 @@ const votes = () => {
         <div class="flex flex-col gap-2">
             <span class="text-base font-medium">End date</span>
             <div class="flex rounded-lg justify-between items-center p-1 bg-[#5349492d] border border-[#53494954] duration-300  hover:bg-[#53494954]  hover:border-[#53494954] hover:text-[rgba(255,255,255,0.7)] px-2">
-                <span class="text-[rgba(255,255,255,0.7)]">Pick a date</span>
-                <input v-model = 'EndDate' type="date"  class="rounded-lg p-1 text-[17px] text-white bg-transparent  text-[rgba(255,255,255,0.7)] " required>
+                <span class=" hidden md:block text-[rgba(255,255,255,0.7)]">Pick a date</span>
+                <input v-model = 'EndDate' type="date"    class="rounded-lg p-1 text-[17px] text-white  text-[rgba(255,255,255,0.7)] border border-[#53494954] bg-[#534949f6] w-full md:w-[40%]" placeholder="hey">
             </div>
         </div>
 
@@ -156,5 +154,9 @@ const votes = () => {
     
 </template>
 <style>
+
+@media screen and (max-width: 720px) {
+    ::-webkit-calendar-picker-indicator {  color: white; width: 100%; padding: 0 45%;}
+}
 
 </style>
