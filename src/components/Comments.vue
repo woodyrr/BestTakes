@@ -40,11 +40,11 @@
 
 
 <script setup>
-import {ref, onMounted, onUnmounted, onBeforeUnmount} from 'vue'
-import { useRoute, RouterLink, useRouter} from 'vue-router';
-import {getAuth,GithubAuthProvider, signInWithPopup, onAuthStateChanged, signOut} from "firebase/auth"
+import {ref, onMounted, onUnmounted} from 'vue'
+import { useRoute} from 'vue-router';
+import {getAuth,onAuthStateChanged} from "firebase/auth"
 import db from '../main.js'
-import { collection, addDoc, getDocs, orderBy, onSnapshot, doc, deleteDoc, query } from "firebase/firestore"; 
+import { collection, addDoc, orderBy, onSnapshot, query } from "firebase/firestore"; 
 
 const route = useRoute();
 
@@ -53,10 +53,9 @@ const newComment = ref('');
 
 // Authentication process stuff
 const isLoggedIn = ref(false)
-const router = useRouter()
 const auth = getAuth();
 const comments = ref([]);
-
+const randomId = Math.floor(Math.random() * 1000000)
 //auth user personal info stored in arrays
 let usersName = []
 let userIcons = []
@@ -101,14 +100,12 @@ onMounted(() => {
         email:doc.data().email
         
         }));
-        console.log(comments)
+    
     });
 
     // Unsubscribe from snapshot listener when component is unmounted
     onUnmounted(unsubscribe);
 })
-
-const randomId = Math.floor(Math.random() * 1000000)
 
 const addComment = () =>{
     addDoc(collection(db, 'Comments'),{
@@ -122,8 +119,5 @@ const addComment = () =>{
     });
     newComment.value = '';
 }
-
-
-
 
 </script>

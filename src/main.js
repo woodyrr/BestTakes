@@ -7,19 +7,6 @@ import router from './router'
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
-//vuetify
-// import 'vuetify/styles'
-// import { createVuetify } from 'vuetify'
-// import * as components from 'vuetify/components'
-// import * as directives from 'vuetify/directives'
-
-// const vuetify = createVuetify({
-//   components,
-//   directives
-  
-// });
-
-
 const firebaseConfig = {
     apiKey: "AIzaSyDkjxUiWC5qbLkxQfYY2N9-tXwq2U9n7FY",
     authDomain: "best-takes.firebaseapp.com",

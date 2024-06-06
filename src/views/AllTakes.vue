@@ -1,6 +1,6 @@
 <template >
   <div class="flex flex-col gap-8 lg:px-[7%]">
-
+    
     <div class="flex flex-col gap-10">
       <div class="flex items-center gap-2">
         <h2 class="text-green-400 takes font-medium">Active Takes</h2>
@@ -26,7 +26,7 @@ import {ref, onMounted, onUnmounted} from 'vue'
 import active from '../components/Active.vue'
 import past from '../components/Past.vue'
 import db from '../main.js'
-import { collection, addDoc, getDocs, orderBy, onSnapshot, doc, deleteDoc, query } from "firebase/firestore"; 
+import { collection, orderBy, onSnapshot, query } from "firebase/firestore"; 
 
 const takes = ref([]);
 
@@ -47,7 +47,7 @@ takes.value = snapshot.docs.map((doc) => ({
 }));
 
 });
-console.log(takes)
+// console.log(takes)
 
 // Unsubscribe from snapshot listener when component is unmounted
 onUnmounted(unsubscribe);

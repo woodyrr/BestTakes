@@ -10,12 +10,6 @@ const filteredTakes = computed(() => {
   return takes.value.filter(item => new Date(item.deadline) < today);
 });
 
-// Function to format the date
-const formatDate = (date) => {
-  const options = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
-  return new Date(date).toLocaleDateString('en-US', options);
-};
-
 
 onMounted(() => {
 const takeCollection = query(collection(db, 'Takes'), orderBy('date', 'desc'));

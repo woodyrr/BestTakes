@@ -1,9 +1,9 @@
 <script setup>
 import {ref, onMounted, onUnmounted, onBeforeUnmount} from 'vue'
-import { useRoute, RouterLink, useRouter} from 'vue-router';
+import { useRoute, useRouter} from 'vue-router';
 import {getAuth,GithubAuthProvider, signInWithPopup, onAuthStateChanged, signOut} from "firebase/auth"
 import db from '../main.js'
-import { collection, addDoc, getDocs, orderBy, onSnapshot, doc, deleteDoc, query } from "firebase/firestore"; 
+import { collection, orderBy, onSnapshot, query } from "firebase/firestore"; 
 import voting from "../components/Voting.vue"
 import comment from "../components/Comments.vue"
 const route = useRoute();
@@ -46,8 +46,6 @@ onMounted(() => {
             let photo  = user.photoURL
             usersName.value = names
             userIcons.value = photo
-            // console.log(usersName)
-            // return usersName
         }
         else{
             isLoggedIn.value = false;
